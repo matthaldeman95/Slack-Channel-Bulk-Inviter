@@ -24,7 +24,7 @@ class SlackAPIClient(SlackOAuthClient):
         Returns the channel ID if found, raise a ChannelNotFound exception otherwise
         """
         url = self.base_url
-        url += "groups.list" if is_private else "channels.list"
+        url += "conversations.list"
         params = {
             "limit": 1000,
             "types": "private_channel" if is_private else "public_channel"
@@ -33,7 +33,7 @@ class SlackAPIClient(SlackOAuthClient):
             response = self.request("GET", url, params=params, headers=self.headers)
             if not response['ok']:
                 raise SlackAPIError(response['error'])
-            results = response['groups'] if is_private else response['channels']
+            results = response['channels']
             for result in results:
                 if result['name'] == channel_name:
                     return result['id']
@@ -69,9 +69,9 @@ class SlackAPIClient(SlackOAuthClient):
         Invite the specified user to the specified channel
         """
         url = self.base_url
-        url += "groups.invite" if is_private else "channels.invite"
+        url += "conversations.invite"
         params = {
-            "user": user_id,
+            "users": user_id,
             "channel": channel_id
         }
         response = self.request("POST", url, headers=self.headers, params=params)

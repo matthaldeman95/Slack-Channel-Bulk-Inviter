@@ -57,7 +57,7 @@ class SlackOAuthClient:
         """
         url = self.auth_url
         url += "?client_id=" + self.client_id
-        url += "&scope=channels:read,groups:read,users:read,users:read.email"
+        url += "&scope=channels:read,groups:read,users:read,users:read.email,groups:write,channels:write"
         url += "&redirect_uri=http://localhost"
         print("Now opening web browser to authentication page.")
         print("Approve the required permissions and you will be redirected.")
