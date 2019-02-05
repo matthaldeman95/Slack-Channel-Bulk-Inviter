@@ -7,19 +7,22 @@ from SlackAPIClient import SlackAPIClient
 
 from time import sleep
 
+def print_spacer():
+    print('\n---------------------------------\n')
+
 def main():
     c = SlackAPIClient(credentials_file="credentials.json")
     
-    print('\n---------------------------------\n')
+    print_spacer()
     channel_private_input = input("Is the channel private?  Type y for yes, any other character for no:  ")
     channel_private = channel_private_input.strip().lower() == "y"
     
-    print('\n---------------------------------\n')
+    print_spacer()
     channel_name = input("Enter the name of the channel:  ")
     print("Finding channel...")
     channel_id = c.find_channel(channel_name, channel_private)
     
-    print('\n\n---------------------------------\n\n')
+    print_spacer()
     print("Either paste a comma-separated list of email addresses into this prompt, or provide the name of a file in your current working directory that contains email addresses of the target users, one email address per line.  ")
     user_list_input = input("Response:  ")
     try:
@@ -28,7 +31,7 @@ def main():
     except IOError:
         user_list = user_list_input.split(',')
     user_list = [u.strip().lower() for u in user_list if u]
-    print('\n\n---------------------------------\n\n')
+    print_spacer()
     print(f"Found {len(user_list)} emails in that list")
     if len(user_list) <= 0:
         raise InvalidUserList("0 users found in list provided, unable to take any action")
@@ -47,19 +50,19 @@ def main():
         else:
             users_not_found.append(u)
 
-    print('\n\n---------------------------------\n\n')
+    print_spacer()
     print(f"\nFound {len(users_found)} matching accounts.")
     if len(users_found) <= 0:
         raise InvalidUserList("0 users found with matching Slack accounts, unable to take any action")
     if len(users_not_found) > 0:
-        print('\n\n---------------------------------\n\n')
+        print_spacer()
         print(f"Unable to find {len(users_not_found)} account(s), would you like to see a list?  ")
         see_list = input("Type y for yes, any other character for no:  ")
         if see_list.strip().lower() == "y":
             print("Accounts not found:  ")
             for u in users_not_found:
                 print(u)
-    print('\n---------------------------------\n')
+    print_spacer()
 
     print(f"All set to invite {len(users_found)} users to channel #{channel_name}?")
     print("Type y for yes, any other character to abort and reconsider the permanence of what you're about to do.")
@@ -80,7 +83,7 @@ def main():
                 "user": u['email'],
                 "error": str(e)
             })
-    print('\n---------------------------------\n')
+    print_spacer()
     print(f"{successes} users invited successfully")
     if len(failures) == 0:
         print("No failures!")
@@ -90,7 +93,6 @@ def main():
             json.dump(failures, outfile, indent=4)
         print("An error log has been written to this directory, called errors.json")
     print("Bye for now!")
-
 
 
 if __name__ == "__main__":
