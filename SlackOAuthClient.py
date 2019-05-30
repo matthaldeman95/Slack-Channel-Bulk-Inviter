@@ -8,10 +8,12 @@ from builtins import input
 from exceptions import *
 import requests
 
+
 class SlackOAuthClient:
     """
     Class that handles OAuth credential generation
     """
+
     def __init__(self, credentials_file):
         """Load credentials"""
         self.client_id = ""
@@ -28,13 +30,15 @@ class SlackOAuthClient:
             with open(self.credentials_file) as infile:
                 credentials = json.load(infile)
         except IOError:
-            raise CredentialFileNotFound("No credentials.json file found in working directory")
+            raise CredentialFileNotFound(
+                "No credentials.json file found in working directory")
         try:
             self.client_id = credentials['client_id']
             self.client_secret = credentials['client_secret']
             self.access_token = credentials['access_token']
         except KeyError:
-            raise InvalidCredentialsFile("Invalid credential file.  Ask Matthew for help.")
+            raise InvalidCredentialsFile(
+                "Invalid credential file.  Ask Matthew for help.")
         if not self.access_token:
             self.get_new_tokens()
 
@@ -49,7 +53,8 @@ class SlackOAuthClient:
                 }
                 json.dump(credentials, outfile, indent=4)
         except IOError:
-            raise CredentialFileNotFound("No credentials.json file found in working directory")
+            raise CredentialFileNotFound(
+                "No credentials.json file found in working directory")
 
     def get_new_tokens(self):
         """
@@ -69,7 +74,8 @@ class SlackOAuthClient:
         try:
             code = code_url.split("localhost/?code=")[1].split("&")[0]
         except:
-            raise InvalidCodeUrl("Error with parsing that URL.  Talk to Matthew.")
+            raise InvalidCodeUrl(
+                "Error with parsing that URL.  Talk to Matthew.")
         params = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
@@ -82,7 +88,8 @@ class SlackOAuthClient:
         try:
             self.access_token = r_json['access_token']
         except KeyError:
-            raise InvalidAuthenticationResponse("Unable to get an access token.")
+            raise InvalidAuthenticationResponse(
+                "Unable to get an access token.")
         self.write_credentials()
 
     @staticmethod
@@ -91,9 +98,11 @@ class SlackOAuthClient:
         if method.lower() == 'get':
             response = requests.get(url, headers=headers, params=params)
         elif method.lower() == 'post':
-            response = requests.post(url, headers=headers, params=params, data=data)
+            response = requests.post(
+                url, headers=headers, params=params, data=data)
         elif method.lower() == 'put':
-            response = requests.put(url, headers=headers, params=params, data=data)
+            response = requests.put(
+                url, headers=headers, params=params, data=data)
         else:
             raise InvalidHttpMethod()
         response.raise_for_status()

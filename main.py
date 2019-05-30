@@ -31,6 +31,7 @@ def main():
     except IOError:
         user_list = user_list_input.split(',')
     user_list = [u.strip().lower() for u in user_list if u]
+    user_list = user_list[0:500]
     print_spacer()
     print(f"Found {len(user_list)} emails in that list")
     if len(user_list) <= 0:

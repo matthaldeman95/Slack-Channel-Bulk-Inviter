@@ -6,6 +6,7 @@ Subclasses the SlackOAuthClient parent class
 from exceptions import *
 from SlackOAuthClient import SlackOAuthClient
 
+
 class SlackAPIClient(SlackOAuthClient):
     """
     Class that handles all Slack API methods
@@ -30,7 +31,8 @@ class SlackAPIClient(SlackOAuthClient):
             "types": "private_channel" if is_private else "public_channel"
         }
         while True:
-            response = self.request("GET", url, params=params, headers=self.headers)
+            response = self.request(
+                "GET", url, params=params, headers=self.headers)
             if not response['ok']:
                 raise SlackAPIError(response['error'])
             results = response['channels']
@@ -57,7 +59,8 @@ class SlackAPIClient(SlackOAuthClient):
         """
         url = self.base_url + "users.lookupByEmail"
         params = {"email": email}
-        response = self.request("GET", url, headers=self.headers, params=params)
+        response = self.request(
+            "GET", url, headers=self.headers, params=params)
         if not response['ok']:
             if response['error'] == "users_not_found":
                 return None
@@ -74,7 +77,8 @@ class SlackAPIClient(SlackOAuthClient):
             "users": user_id,
             "channel": channel_id
         }
-        response = self.request("POST", url, headers=self.headers, params=params)
+        response = self.request(
+            "POST", url, headers=self.headers, params=params)
         if not response['ok']:
             raise SlackAPIError(response['error'])
         else:
