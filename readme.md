@@ -14,6 +14,8 @@ You will need to create a Slack app at api.slack.com with the following OAuth sc
 - `groups:read` and `groups:write` (For private channels)
 - `users:read.email` (Always needed)
 
+And specify "http://localhost" as your OAuth redirect URI.
+
 Once you have your client ID and secret, paste them into the "credentials_empty.json" and rename it to "credentials.json".  Leave the access token value blank, as that will be filled in once you receive an access token.
 
 **Disclaimer** This is an extremely insecure way of storing your tokens!!!  Your tokens are stored in plain text in a file.  I take no responsibility for your leaked tokens.  I highly suggest you modify the `load_credentials()` and `write_credentials()` methods in the `SlackOAuthClient` class to store the credentials in a safer way.
