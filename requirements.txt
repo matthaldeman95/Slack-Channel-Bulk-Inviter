@@ -1,8 +1,6 @@
-autopep8==1.4.4
-certifi==2018.11.29
+certifi==2019.3.9
 chardet==3.0.4
 idna==2.8
-progress==1.4
-pycodestyle==2.5.0
-requests==2.21.0
-urllib3==1.24.1
+progress==1.5
+requests==2.22.0
+urllib3==1.25.3
