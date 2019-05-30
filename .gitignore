@@ -1,6 +1,5 @@
 __pycache__
 venv
-credentials.json
 *.pyc
 .DS_Store
 settings.json
